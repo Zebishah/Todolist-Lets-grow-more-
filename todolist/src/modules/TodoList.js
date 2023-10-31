@@ -20,32 +20,25 @@ const TodoList = (props) => {
         localStorage.setItem('task', JSON.stringify(data));
     }
     let addTask = () => {
-        data = JSON.parse(localStorage.getItem('task')) || [];
-        let note = {
-            task: task.current.value
+        const newTask = task.current.value.trim();
+
+        if (newTask === "") {
+            alert("Task cannot be empty");
+            return;
         }
 
-        tasks.map((data, index) => {
-            if (task.current.value === data.task) {
-                count = 0;
-                alert("This task already exsisted");
+        const existingTask = tasks.find((t) => t.task === newTask);
 
-            }
-            else {
-                count = 1;
-            }
-
-        })
-        if (count === 1) {
-            data.push(note);
-
-            localStorage.setItem('task', JSON.stringify(data));
-            setTasks(data);
-            task.current.value = ""
+        if (existingTask) {
+            alert("This task already exists");
+        } else {
+            const updatedTasks = [...tasks, { task: newTask }];
+            setTasks(updatedTasks);
+            localStorage.setItem('task', JSON.stringify(updatedTasks));
+            task.current.value = "";
         }
-
-
     }
+
     return (
         <div className='w-full overflow-x-hidden flex flex-col justify-center items-center gap-y-6 '>
             <h1 className='text-[#ff6464] text-xl font-custom'>Todo-List(Task Managing platform)</h1>
